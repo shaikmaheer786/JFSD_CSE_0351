@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+        #summary {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Food Menu</h1>
+    <ul id="foodMenu"></ul>
+
+    <h2>Place Your Order</h2>
+    <form id="orderForm">
+        <label for="foodItem">Select Food Item:</label>
+        <select id="foodItem" required>
+            <option value="" disabled selected>Choose an item</option>
+        </select>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" required>
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <h2>Order Summary</h2>
+    <div id="summary"></div>
+
+    <script>
+
+        const foodItems = [
+            { name: 'Pizza', price: 10.99 },
+            { name: 'Burger', price: 5.99 },
+            { name: 'Pasta', price: 8.99 },
+            { name: 'Salad', price: 6.99 }
+        ];
+
+        const foodMenu = document.getElementById('foodMenu');
+        const foodItemSelect = document.getElementById('foodItem');
+        const orderForm = document.getElementById('orderForm');
+        const summary = document.getElementById('summary');
+
+        foodItems.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.innerText = `${item.name} - $${item.price}`;
+            foodMenu.appendChild(listItem);
+
+            const option = document.createElement('option');
+            option.value = item.name;
+            option.textContent = `${item.name} - $${item.price}`;
+            foodItemSelect.appendChild(option);
+        });
+
+        orderForm.addEventListener('submit', function (event) {
+            event.preventDefault(); 
+
+            const foodItem = document.getElementById('foodItem').value;
+            const quantity = parseInt(document.getElementById('quantity').value);
+
+            if (foodItem && quantity >= 1) {
+
+                const selectedFood = foodItems.find(item => item.name === foodItem);
+
+                const totalPrice = selectedFood.price * quantity;
+
+                summary.innerHTML = `You have ordered ${quantity} x ${foodItem}(s).<br>Total price: $${totalPrice.toFixed(2)}`;
+            } else {
+                summary.innerHTML = 'Please select a valid food item and quantity.';
+            }
+        });
+    </script>
+</body>
+</html>
